@@ -14,21 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -53,21 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    print("I got here");
     loadExistingWallet();
   }
 
   Future<void> loadExistingWallet() async {
-    print("GOing to load existing wallet");
     String? existingWallet =
         await AccountsUtil.getInstance().getAccountAddress();
-    print("Attempted to load existing wallet and got = $existingWallet");
+    print("App: Attempted to load existing wallet and got = $existingWallet");
     if (existingWallet != null) {
       cacheWalletAddress(existingWallet);
     }
   }
 
-  void cacheWalletAddress(String walletAddress) {
+  void cacheWalletAddress(String? walletAddress) {
     setState(() {
       _walletLoaded = true;
       _walletAddress = walletAddress;
@@ -80,6 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
     cacheWalletAddress(walletAddress);
   }
 
+  Future<void> clearWallet() async {
+    AccountsUtil.getInstance().permanentlyDeleteAccount();
+    cacheWalletAddress(null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _walletLoaded
           ? _WalletView(
-              walletAddress: _walletAddress, createWallet: createWallet)
+              walletAddress: _walletAddress,
+              createWallet: createWallet,
+              clearWallet: clearWallet)
           : const _LoadingView(),
     );
   }
@@ -110,10 +100,14 @@ class _LoadingView extends StatelessWidget {
 }
 
 class _WalletView extends StatelessWidget {
-  const _WalletView({required this.walletAddress, required this.createWallet});
+  const _WalletView(
+      {required this.walletAddress,
+      required this.createWallet,
+      required this.clearWallet});
 
   final String? walletAddress;
   final VoidCallback createWallet;
+  final VoidCallback clearWallet;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +125,14 @@ class _WalletView extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: createWallet,
                 child: const Text('Generate a wallet'),
+              ),
+            ),
+          if (walletAddress != null)
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                onPressed: clearWallet,
+                child: const Text('Delete Existing Wallet'),
               ),
             )
         ],
