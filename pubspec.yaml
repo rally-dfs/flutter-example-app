@@ -36,6 +36,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  flutter_sdk:
+    git:
+      url: https://github.com/rally-dfs/rly-network-flutter-sdk
+      ref: main
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
