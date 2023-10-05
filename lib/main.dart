@@ -45,9 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String? existingWallet =
         await AccountsUtil.getInstance().getAccountAddress();
     print("App: Attempted to load existing wallet and got = $existingWallet");
-    if (existingWallet != null) {
-      cacheWalletAddress(existingWallet);
-    }
+    cacheWalletAddress(existingWallet);
   }
 
   void cacheWalletAddress(String? walletAddress) {
