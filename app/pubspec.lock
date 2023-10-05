@@ -174,15 +174,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
-  flutter_sdk:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: main
-      resolved-ref: "6d9f0a7aeeae1312840875690d2e4f7246246404"
-      url: "https://github.com/rally-dfs/rly-network-flutter-sdk"
-    source: git
-    version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -329,6 +320,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
+  rly_network_flutter_sdk:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: e1ab1138169aee56184231ad6529a06fee8a370a
+      url: "https://github.com/rally-dfs/rly-network-flutter-sdk"
+    source: git
+    version: "0.0.1"
   sec:
     dependency: transitive
     description:
