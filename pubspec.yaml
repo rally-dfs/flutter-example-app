@@ -39,7 +39,7 @@ dependencies:
   flutter_sdk:
     git:
       url: https://github.com/rally-dfs/rly-network-flutter-sdk
-      ref: main
+      ref: rw/fix_account_creation
 
 dev_dependencies:
   flutter_test:

@@ -178,8 +178,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
-      resolved-ref: "6d9f0a7aeeae1312840875690d2e4f7246246404"
+      ref: "rw/fix_account_creation"
+      resolved-ref: "9cdab7596183c44c80a595aaf70e0dc587513974"
       url: "https://github.com/rally-dfs/rly-network-flutter-sdk"
     source: git
     version: "0.0.1"
