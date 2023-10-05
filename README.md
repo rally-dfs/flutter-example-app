@@ -1,16 +1,6 @@
-# flutter_example
+# Rally Protocol Flutter SDK Example App
 
-A new Flutter project.
+this is an example of using the Rally Protocol Flutter SDK in a flutter App. This app allows you to create a new EOA for a user, the EOA is encrypted, saved to device and optionally backed up from the cloud. From there you can gaslessly claim an ERC20 token and use it to purchase an NFT (also gaslessly 🙌 )
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Rally Protocol Flutter SDK] [https://github.com/rally-dfs/rly-network-flutter-sdk]
+[Rally Protocol Developer Docs] [https://docs.rallyprotocol.com/]

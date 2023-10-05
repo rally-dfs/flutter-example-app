@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sdk/account.dart';
+import 'package:rly_network_flutter_sdk/account.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,9 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> createWallet() async {
+    print("start create wallet");
     String walletAddress = await AccountsUtil.getInstance().createAccount();
 
     cacheWalletAddress(walletAddress);
+    print("end create wallet");
   }
 
   Future<void> clearWallet() async {
