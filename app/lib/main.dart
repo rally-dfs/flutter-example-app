@@ -113,15 +113,16 @@ class _WalletView extends StatelessWidget {
   Widget build(BuildContext context) {
     final String heroText = walletAddress == null
         ? "Welcome, you don't appear to have a wallet"
-        : "Welcome:\n $walletAddress";
-    return Center(
+        : "Welcome\n $walletAddress";
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            heroText,
-            textAlign: TextAlign.center,
-          ),
+          Text(heroText,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18.0,
+              )),
           if (walletAddress == null)
             Padding(
               padding: const EdgeInsets.all(10.0),
