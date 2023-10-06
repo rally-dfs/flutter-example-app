@@ -118,11 +118,13 @@ class _WalletView extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: Column(
         children: <Widget>[
-          Text(heroText,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
+          Center(
+            child: Text(heroText,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                )),
+          ),
           if (walletAddress == null)
             Padding(
               padding: const EdgeInsets.all(10.0),
