@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
 import 'package:flutter_example/services/nft.dart';
+import 'package:flutter_example/widgets/wallet/token_tab.dart';
 import 'package:http/http.dart';
 import 'package:rly_network_flutter_sdk/account.dart';
 import 'package:web3dart/web3dart.dart';
@@ -18,26 +19,9 @@ class WalletHomeScreen extends StatefulWidget {
 }
 
 class WalletHomeScreenState extends State<WalletHomeScreen> {
-  double? _balance;
-  String? _nftUri;
-
-  @override
-  void initState() {
-    super.initState();
-    getBalance();
-  }
-
   Future<void> clearWallet() async {
     AccountsUtil.getInstance().permanentlyDeleteAccount();
     widget.setWalletAddress(null);
-  }
-
-  Future<void> getBalance() async {
-    print("getting balance");
-    double balance = await rlyNetwork.getBalance();
-    setState(() {
-      _balance = balance;
-    });
   }
 
   Future<void> mintNFT() async {
@@ -90,7 +74,7 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
                   ),
                   Expanded(
                     child: TabBarView(
-                      children: [Text("Tokens"), Text("NFTs")],
+                      children: [TokenTab(), Text("NFTs")],
                     ),
                   )
                 ],
