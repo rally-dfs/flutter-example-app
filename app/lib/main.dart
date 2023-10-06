@@ -5,7 +5,6 @@ import 'package:flutter_example/services/nft.dart';
 import "package:flutter_example/constants.dart" as constants;
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'dart:developer';
 
 final rlyNetwork = rlyMumbaiNetwork;
 
@@ -22,8 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 72, 114, 197)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 72, 114, 197)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'EOA Demo'),
@@ -56,7 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> loadExistingWallet() async {
     String? existingWallet =
         await AccountsUtil.getInstance().getAccountAddress();
-    print("App: Attempted to load existing wallet and got = $existingWallet");
     cacheWalletAddress(existingWallet);
   }
 
