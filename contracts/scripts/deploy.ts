@@ -1,26 +1,24 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  //const env = await GsnTestEnvironment.startGsn("localhost", 8090);
+  //const { contractsDeployment } = env;
 
-  const lockedAmount = ethers.parseEther("0.001");
+  const forwarderAddress = "0xB2b5841DBeF766d4b521221732F9B618fCf34A87";
 
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  //deploy test rly token
+  const NFTContract = await hre.ethers.getContractFactory("TestNFT");
+  const nftContract = await NFTContract.deploy(forwarderAddress);
 
-  await lock.waitForDeployment();
+  await nftContract.waitForDeployment();
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  const nftContractAddress = await nftContract.getAddress();
+
+  console.log("mumbai deployment successful!");
+
+  console.log("nft contract deployed to", nftContractAddress);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
