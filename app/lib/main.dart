@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rly_network_flutter_sdk/account.dart';
 import 'package:rly_network_flutter_sdk/network.dart';
+import 'package:flutter_example/services/nft.dart';
+import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
 
 final rlyNetwork = rlyMumbaiNetwork;
 
@@ -83,6 +86,18 @@ class _MyHomePageState extends State<MyHomePage> {
     cacheWalletAddress(null);
   }
 
+  Future<void> getNFTInfo() async {
+    var httpClient = Client();
+    final provider = Web3Client(
+        'https://polygon-mumbai.g.alchemy.com/v2/WTW_m3g-DG1oNn8n4Rn0Pb-zHVYa8SgB',
+        httpClient);
+
+    NFT nft = NFT();
+    nft.getCreateNFT(
+        EthereumAddress.fromHex('0xD1462A9a9DC7036f867B244D2f1F795F4d9400Ff'),
+        provider);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
               createWallet: createWallet,
               clearWallet: clearWallet,
               balance: _balance,
+              getNFTInfo: getNFTInfo,
             )
           : const _LoadingView(),
     );
@@ -121,11 +137,13 @@ class _WalletView extends StatelessWidget {
       {required this.walletAddress,
       required this.createWallet,
       required this.clearWallet,
-      required this.balance});
+      required this.balance,
+      this.getNFTInfo});
 
   final String? walletAddress;
   final VoidCallback createWallet;
   final VoidCallback clearWallet;
+  final VoidCallback? getNFTInfo;
   final double? balance;
 
   @override
@@ -151,10 +169,17 @@ class _WalletView extends StatelessWidget {
               ),
             ),
           if (walletAddress != null && balance == null)
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text("No Balance Fools"),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                onPressed: getNFTInfo,
+                child: const Text('get nft info'),
+              ),
             ),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("No Balance"),
+          ),
           if (walletAddress != null)
             Padding(
               padding: const EdgeInsets.all(10.0),

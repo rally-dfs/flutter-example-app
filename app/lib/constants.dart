@@ -1,0 +1,1 @@
+const nftContractAddress = '0xD1462A9a9DC7036f867B244D2f1F795F4d9400Ff';
