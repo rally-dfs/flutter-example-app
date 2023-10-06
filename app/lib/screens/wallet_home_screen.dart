@@ -69,40 +69,36 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return (Column(
-      children: <Widget>[
-        Center(
-          child: Text("Welcome\n${widget.walletAddress}",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
-        ),
-        if (_nftUri != null)
-          Image(
-            image: NetworkImage(_nftUri!),
-            fit: BoxFit.cover,
-          ),
-        if (_nftUri == null && (_balance == null || _balance == 0.0))
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(
-              onPressed: mintNFT,
-              child: const Text('mint nft'),
+    return Column(
+      children: [
+        Expanded(
+          child: DefaultTabController(
+            length: 2,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 200),
+              child: const Column(
+                children: [
+                  TabBar(
+                    tabs: [
+                      Tab(
+                        text: "Tokens",
+                      ),
+                      Tab(
+                        text: "NFTs",
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [Text("Tokens"), Text("NFTs")],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text("No Balance"),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ElevatedButton(
-            onPressed: clearWallet,
-            child: const Text('Delete Existing Wallet'),
           ),
         ),
       ],
-    ));
+    );
   }
 }
