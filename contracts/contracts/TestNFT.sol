@@ -22,7 +22,7 @@ contract TestNFT is ERC721URIStorage {
     function mint() public {
         uint256 newItemId = tokenIds;
         tokenIds++;
-        _safeMint(msg.sender, newItemId);
+        _safeMint(_msgSender(), newItemId);
         _setTokenURI(newItemId, getTokenURI(newItemId));
     }
 
@@ -32,8 +32,11 @@ contract TestNFT is ERC721URIStorage {
             "<style>.base { fill: white; font-family: serif; font-size: 14px; }</style>",
             '<rect width="100%" height="100%" fill="#FCA311" />',
             '<text x="50%" y="40%" class="base" dominant-baseline="middle" text-anchor="middle">',
-            "You Are Awesome!",
+            "Success, Demo Complete!",
             "</text>",
+            '<text x="50%" y="50%" class="base" dominant-baseline="middle" text-anchor="middle">',
+            "Learn more: docs.rallyprotocol.com",
+            "</text>"
             "</svg>"
         );
         return

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rly_network_flutter_sdk/account.dart';
 import 'package:rly_network_flutter_sdk/network.dart';
 import 'package:flutter_example/services/nft.dart';
+import "package:flutter_example/constants.dart" as constants;
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
+import 'dart:developer';
 
 final rlyNetwork = rlyMumbaiNetwork;
 
@@ -48,6 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     loadExistingWallet();
     getBalance();
+    rlyNetwork.setApiKey(
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOjQ3fQ.AmObzvqJBFddxgBcLgM-yHb5hPT90sai3SyS_V2ieM1UgHkfroybK-Hc9gpGhUtG1wPBTak6EPSVBJzyl2Z97g");
   }
 
   Future<void> loadExistingWallet() async {
@@ -86,16 +90,25 @@ class _MyHomePageState extends State<MyHomePage> {
     cacheWalletAddress(null);
   }
 
-  Future<void> getNFTInfo() async {
+  Future<void> mintNFT() async {
     var httpClient = Client();
-    final provider = Web3Client(
-        'https://polygon-mumbai.g.alchemy.com/v2/WTW_m3g-DG1oNn8n4Rn0Pb-zHVYa8SgB',
-        httpClient);
 
-    NFT nft = NFT();
-    nft.getCreateNFT(
-        EthereumAddress.fromHex('0xD1462A9a9DC7036f867B244D2f1F795F4d9400Ff'),
-        provider);
+    final provider = Web3Client(constants.rpcURL, httpClient);
+
+    final NFT nft = NFT(EthereumAddress.fromHex(constants.nftContractAddress),
+        EthereumAddress.fromHex(_walletAddress!), provider);
+
+    final nextNFTId = await nft.getCurrentNFTId();
+
+    final gsnTx = await nft.getMintNFTTx();
+
+    final String txHash = await rlyNetwork.relay(gsnTx);
+
+    final String tokenURI = await nft.getTokenURI(nextNFTId);
+
+    print("current nft: $nextNFTId");
+    print("tokenURI: $tokenURI");
+    print("txHash: $txHash");
   }
 
   @override
@@ -111,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
               createWallet: createWallet,
               clearWallet: clearWallet,
               balance: _balance,
-              getNFTInfo: getNFTInfo,
+              mintNFT: mintNFT,
             )
           : const _LoadingView(),
     );
@@ -138,12 +151,12 @@ class _WalletView extends StatelessWidget {
       required this.createWallet,
       required this.clearWallet,
       required this.balance,
-      this.getNFTInfo});
+      this.mintNFT});
 
   final String? walletAddress;
   final VoidCallback createWallet;
   final VoidCallback clearWallet;
-  final VoidCallback? getNFTInfo;
+  final VoidCallback? mintNFT;
   final double? balance;
 
   @override
@@ -172,8 +185,8 @@ class _WalletView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: ElevatedButton(
-                onPressed: getNFTInfo,
-                child: const Text('get nft info'),
+                onPressed: mintNFT,
+                child: const Text('mint nft'),
               ),
             ),
           const Padding(
