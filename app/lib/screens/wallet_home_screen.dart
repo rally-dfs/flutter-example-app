@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
 import 'package:flutter_example/services/nft.dart';
+import 'package:flutter_example/widgets/wallet/nft_tab.dart';
 import 'package:flutter_example/widgets/wallet/token_tab.dart';
 import 'package:http/http.dart';
 import 'package:rly_network_flutter_sdk/account.dart';
@@ -60,9 +61,9 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
             length: 2,
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 200),
-              child: const Column(
+              child: Column(
                 children: [
-                  TabBar(
+                  const TabBar(
                     tabs: [
                       Tab(
                         text: "Tokens",
@@ -74,7 +75,10 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
                   ),
                   Expanded(
                     child: TabBarView(
-                      children: [TokenTab(), Text("NFTs")],
+                      children: [
+                        const TokenTab(),
+                        NftTab(walletAddress: widget.walletAddress)
+                      ],
                     ),
                   )
                 ],
