@@ -19,27 +19,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'EOA Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 72, 114, 197)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'EOA Demo'),
+      home: const AppContainer(title: 'EOA Demo'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class AppContainer extends StatefulWidget {
+  const AppContainer({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<AppContainer> createState() => _AppContainerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AppContainerState extends State<AppContainer> {
   bool _walletLoaded = false;
   String? _walletAddress;
   double? _balance;
@@ -47,21 +47,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    loadExistingWallet();
+    attemptToLoadExistingWallet();
     getBalance();
     rlyNetwork.setApiKey(constants.rlyApiKey);
   }
 
-  Future<void> loadExistingWallet() async {
+  Future<void> attemptToLoadExistingWallet() async {
     String? existingWallet =
         await AccountsUtil.getInstance().getAccountAddress();
-    cacheWalletAddress(existingWallet);
-  }
-
-  void cacheWalletAddress(String? walletAddress) {
     setState(() {
       _walletLoaded = true;
-      _walletAddress = walletAddress;
+      _walletAddress = existingWallet;
     });
   }
 
@@ -79,12 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> createWallet() async {
     String walletAddress = await AccountsUtil.getInstance().createAccount();
 
-    cacheWalletAddress(walletAddress);
+    setWalletAddress(walletAddress);
   }
 
   Future<void> clearWallet() async {
     AccountsUtil.getInstance().permanentlyDeleteAccount();
-    cacheWalletAddress(null);
+    setWalletAddress(null);
+  }
+
+  void setWalletAddress(String? walletAddress) {
+    setState(() {
+      _walletAddress = walletAddress;
+    });
   }
 
   Future<void> mintNFT() async {
