@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rly_network_flutter_sdk/account.dart';
+import 'package:rly_network_flutter_sdk/network.dart';
+
+final rlyNetwork = rlyMumbaiNetwork;
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 72, 114, 197)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Rally Protocol Secure Wallet Demo'),
+      home: const MyHomePage(title: 'EOA Demo'),
     );
   }
 }
@@ -34,11 +38,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _walletLoaded = false;
   String? _walletAddress;
+  double? _balance;
 
   @override
   void initState() {
     super.initState();
     loadExistingWallet();
+    getBalance();
   }
 
   Future<void> loadExistingWallet() async {
@@ -55,12 +61,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> getBalance() async {
+    print("getting balance");
+    if (_walletAddress != null) {
+      rlyNetwork.getBalance().then((balance) {
+        setState(() {
+          _balance = balance;
+        });
+      });
+    }
+  }
+
   Future<void> createWallet() async {
-    print("start create wallet");
     String walletAddress = await AccountsUtil.getInstance().createAccount();
 
     cacheWalletAddress(walletAddress);
-    print("end create wallet");
   }
 
   Future<void> clearWallet() async {
@@ -79,7 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ? _WalletView(
               walletAddress: _walletAddress,
               createWallet: createWallet,
-              clearWallet: clearWallet)
+              clearWallet: clearWallet,
+              balance: _balance,
+            )
           : const _LoadingView(),
     );
   }
@@ -103,11 +120,13 @@ class _WalletView extends StatelessWidget {
   const _WalletView(
       {required this.walletAddress,
       required this.createWallet,
-      required this.clearWallet});
+      required this.clearWallet,
+      required this.balance});
 
   final String? walletAddress;
   final VoidCallback createWallet;
   final VoidCallback clearWallet;
+  final double? balance;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +150,11 @@ class _WalletView extends StatelessWidget {
                 child: const Text('Generate a wallet'),
               ),
             ),
+          if (walletAddress != null && balance == null)
+            const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text("No Balance Fools"),
+            ),
           if (walletAddress != null)
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -138,7 +162,7 @@ class _WalletView extends StatelessWidget {
                 onPressed: clearWallet,
                 child: const Text('Delete Existing Wallet'),
               ),
-            )
+            ),
         ],
       ),
     );
