@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'EOA Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 72, 114, 197)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff22A6FA)),
         useMaterial3: true,
       ),
       home: const AppContainer(title: 'EOA Demo'),
@@ -68,7 +67,7 @@ class _AppContainerState extends State<AppContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: const Color(0xff22A6FA),
         title: Text(widget.title),
       ),
       body: _appFinishedLoading

@@ -65,15 +65,10 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
     setState(() {
       _nftUri = json['image'];
     });
-
-    print("current nft: $nextNFTId");
-    print("txHash: $txHash");
-    print("json: $json");
   }
 
   @override
   Widget build(BuildContext context) {
-    print("balance: $_balance");
     return (Column(
       children: <Widget>[
         Center(
