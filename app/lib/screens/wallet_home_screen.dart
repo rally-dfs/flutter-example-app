@@ -38,9 +38,7 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
   }
 
   Future<void> getBalance() async {
-    print("getting balance");
     double balance = await rlyNetwork.getBalance();
-    print("balance is ${balance}");
     setState(() {
       _balance = balance;
     });
