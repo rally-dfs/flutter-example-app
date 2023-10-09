@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff22A6FA)),
         useMaterial3: true,
       ),
-      home: const AppContainer(title: 'EOA Demo'),
+      home: const AppContainer(title: 'Rally SDK EOA Example'),
     );
   }
 }
@@ -68,6 +68,8 @@ class _AppContainerState extends State<AppContainer> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff22A6FA),
+        titleTextStyle: const TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
         title: Text(widget.title),
       ),
       body: _appFinishedLoading
