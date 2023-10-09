@@ -23,6 +23,7 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
   double? _balance;
   String? _nftUri;
   String? _nftTxHash;
+  String? _tokensClaimedTxHash;
   bool _tokensClaimed = false;
 
   @override
@@ -52,6 +53,7 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
     await getBalance();
     setState(() {
       _tokensClaimed = true;
+      _tokensClaimedTxHash = txHash;
     });
   }
 
@@ -140,17 +142,29 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
         const Center(
             child: Padding(
           padding: EdgeInsets.fromLTRB(10, 50, 10, 10),
-          child: Text("Now let's mint an NFT!",
+          child: Text("ERC20 tokens claimed successfully!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20.0,
               )),
         )),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 10),
+          child: InkWell(
+              child: const Text(
+                'View tokens on Explorer',
+                style: TextStyle(color: Colors.blue),
+              ),
+              onTap: () async {
+                await launchUrl(Uri.parse(
+                    "${Constants.explorerUrl}/tx/$_tokensClaimedTxHash"));
+              }),
+        ),
         const Center(
             child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  "Click below to gasslessly claim your Rally Protocol Flutter SDK demo NFT!",
+                  "Now let's mint and NFT. Click below to claim your Rally Protocol Flutter SDK demo NFT!",
                   textAlign: TextAlign.center,
                 ))),
         Padding(
