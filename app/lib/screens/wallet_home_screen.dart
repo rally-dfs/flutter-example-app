@@ -160,11 +160,16 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
             child: const Text('Mint NFT'),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ElevatedButton(
-            onPressed: clearWallet,
-            child: const Text('Delete Existing Wallet'),
+        const Center(
+          child: Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Text(
+                "This will mint an NFT without the user needing native tokens in their wallet",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12.0,
+                )),
           ),
         ),
       ]);
@@ -209,6 +214,18 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
           child: ElevatedButton(
             onPressed: claimERC20,
             child: const Text('Claim ERC20'),
+          ),
+        ),
+        const Center(
+          child: Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Text(
+                "This will claim 10 units of an ERC20 contract without the user needing native tokens in their wallet",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12.0,
+                )),
           ),
         ),
       ]);
