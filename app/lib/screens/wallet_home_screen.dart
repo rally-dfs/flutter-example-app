@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
@@ -17,6 +19,7 @@ class WalletHomeScreen extends StatefulWidget {
 
 class WalletHomeScreenState extends State<WalletHomeScreen> {
   double? _balance;
+  String? _nftUri;
 
   @override
   void initState() {
@@ -53,9 +56,15 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
 
     final String tokenURI = await nft.getTokenURI(nextNFTId);
 
-    print("current nft: $nextNFTId");
-    print("tokenURI: $tokenURI");
-    print("txHash: $txHash");
+    final parts = tokenURI.split(",");
+
+    final base64Data = utf8.decode(base64.decode(parts[1]));
+
+    final Map<String, dynamic> json = jsonDecode(base64Data);
+
+    setState(() {
+      _nftUri = json['image'];
+    });
   }
 
   @override
@@ -69,7 +78,12 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
                 fontSize: 18.0,
               )),
         ),
-        if (_balance == null)
+        if (_nftUri != null)
+          Image(
+            image: NetworkImage(_nftUri!),
+            fit: BoxFit.cover,
+          ),
+        if (_nftUri == null && (_balance == null || _balance == 0.0))
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: ElevatedButton(
