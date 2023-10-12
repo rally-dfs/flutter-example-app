@@ -110,7 +110,13 @@ class NftTabState extends State<NftTab> {
   Widget mintNftWidget() {
     if (_minting) {
       return (const Column(
-        children: [Text("Minting your NFT..."), CircularProgressIndicator()],
+        children: [
+          Text("Minting your NFT..."),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: CircularProgressIndicator(),
+          )
+        ],
       ));
     }
     return Padding(
