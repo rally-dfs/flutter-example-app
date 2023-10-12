@@ -136,7 +136,19 @@ class NftTabState extends State<NftTab> {
                   : () {
                       mintNFT();
                     },
-              child: const Text("Mint NFT"))
+              child: const Text("Mint NFT")),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 30),
+            child: Center(
+              child: Text(
+                  "This will mint an NFT without user needing any native tokens to pay for gas.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: 12.0,
+                  )),
+            ),
+          )
         ],
       ),
     );
