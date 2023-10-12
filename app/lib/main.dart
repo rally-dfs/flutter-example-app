@@ -70,12 +70,14 @@ class _AppContainerState extends State<AppContainer> {
         backgroundColor: const Color(0xff22A6FA),
         title: Text(widget.title),
       ),
-      body: _appFinishedLoading
-          ? AppContent(
-              walletAddress: _walletAddress,
-              setWalletAddress: setWalletAddress,
-            )
-          : const AppLoadingScreen(),
+      body: SafeArea(
+        child: _appFinishedLoading
+            ? AppContent(
+                walletAddress: _walletAddress,
+                setWalletAddress: setWalletAddress,
+              )
+            : const AppLoadingScreen(),
+      ),
     );
   }
 }

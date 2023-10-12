@@ -14,20 +14,15 @@ class AppContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return (Padding(
       padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-      child: Column(
-        children: <Widget>[
-          if (walletAddress == null)
-            WalletCreationScreen(
+      child: walletAddress == null
+          ? WalletCreationScreen(
               setWalletAddress: setWalletAddress,
-            ),
-          if (walletAddress != null)
-            WalletHomeScreen(
-                setWalletAddress: setWalletAddress,
-                walletAddress: walletAddress!)
-        ],
-      ),
-    );
+            )
+          : WalletHomeScreen(
+              setWalletAddress: setWalletAddress,
+              walletAddress: walletAddress!),
+    ));
   }
 }
