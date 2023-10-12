@@ -59,6 +59,14 @@ class TokenTabState extends State<TokenTab> {
   Widget alreadyClaimedUser() {
     return Column(
       children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Center(
+            child: Text('Congrats you\'ve claimed your gassless erc20 tokens',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+        ),
         const Text("\$RLY balance", style: TextStyle(fontSize: 18)),
         Text(
           "$_balance",
