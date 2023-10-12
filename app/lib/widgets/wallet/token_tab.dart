@@ -59,10 +59,6 @@ class TokenTabState extends State<TokenTab> {
   Widget alreadyClaimedUser() {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
-          child: Text('Welcome back!', style: TextStyle(fontSize: 20)),
-        ),
         const Text("\$RLY balance", style: TextStyle(fontSize: 18)),
         Text(
           "$_balance",
