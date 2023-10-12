@@ -5,6 +5,7 @@ import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
 import 'package:flutter_example/services/nft.dart';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
 class NftTab extends StatefulWidget {
@@ -19,6 +20,7 @@ class NftTabState extends State<NftTab> {
   bool _hasMinted = false;
   bool _minting = false;
   String? _nftUri;
+  String? _txnHash;
 
   @override
   void initState() {
@@ -54,7 +56,15 @@ class NftTabState extends State<NftTab> {
       _hasMinted = true;
       _minting = false;
       _nftUri = json['image'];
+      _txnHash = txHash;
     });
+  }
+
+  Future<void> _showTransactionOnExplorer() async {
+    final Uri explorerUrl = Uri.parse("${Constants.explorerUrl}/tx/$_txnHash");
+    if (!await launchUrl(explorerUrl)) {
+      throw Exception('Could not launch ${explorerUrl.toString()}');
+    }
   }
 
   @override
@@ -99,7 +109,7 @@ class NftTabState extends State<NftTab> {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: TextButton(
                   onPressed: () {
-                    print("Will open browser");
+                    _showTransactionOnExplorer();
                   },
                   child: const Text("view on chain"),
                 )))
