@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
@@ -16,6 +18,7 @@ class NftTab extends StatefulWidget {
 class NftTabState extends State<NftTab> {
   bool _hasMinted = false;
   bool _minting = false;
+  String? _nftUri;
 
   @override
   void initState() {
@@ -41,36 +44,73 @@ class NftTabState extends State<NftTab> {
 
     final String tokenURI = await nft.getTokenURI(nextNFTId);
 
+    final parts = tokenURI.split(",");
+
+    final base64Data = utf8.decode(base64.decode(parts[1]));
+
+    final Map<String, dynamic> json = jsonDecode(base64Data);
+
     setState(() {
       _hasMinted = true;
       _minting = false;
+      _nftUri = json['image'];
     });
-
-    print("current nft: $nextNFTId");
-    print("tokenURI: $tokenURI");
-    print("txHash: $txHash");
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: _minting
-          ? const Column(
-              children: [
-                CircularProgressIndicator(),
-              ],
-            )
-          : Column(
-              children: [if (!_hasMinted) mintNftWidget()],
+        padding: const EdgeInsets.only(top: 16.0),
+        child: _hasMinted ? nftWidget() : mintNftWidget());
+  }
+
+  Widget nftWidget() {
+    if (_nftUri == null) {
+      return const Center(
+        child: Text("Something went wrong. Please try again.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+            )),
+      );
+    }
+    return Column(
+      children: [
+        const Center(
+            child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+          child: Text("Gasless NFT Minted!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+        )),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Center(
+            child: Image(
+              image: NetworkImage(_nftUri!),
+              fit: BoxFit.cover,
             ),
+          ),
+        ),
+        Center(
+            child: Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: TextButton(
+                  onPressed: () {
+                    print("Will open browser");
+                  },
+                  child: const Text("view on chain"),
+                )))
+      ],
     );
   }
 
   Widget mintNftWidget() {
     if (_minting) {
       return (const Column(
-        children: [Text("Claiming RLY..."), CircularProgressIndicator()],
+        children: [Text("Minting your NFT..."), CircularProgressIndicator()],
       ));
     }
     return Padding(
