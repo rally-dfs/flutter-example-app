@@ -72,6 +72,14 @@ class TokenTabState extends State<TokenTab> {
           "$_balance",
           style: const TextStyle(fontSize: 24),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          child: TextButton(
+              onPressed: () {
+                print('will open browser');
+              },
+              child: const Text('view on chain')),
+        )
       ],
     );
   }
