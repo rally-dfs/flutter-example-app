@@ -42,7 +42,7 @@ class WalletHomeScreenState extends State<WalletHomeScreen> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        const TokenTab(),
+                        TokenTab(walletAddress: widget.walletAddress),
                         NftTab(walletAddress: widget.walletAddress)
                       ],
                     ),

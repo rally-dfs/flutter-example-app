@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TokenTab extends StatefulWidget {
-  const TokenTab({Key? key}) : super(key: key);
+  final String walletAddress;
+  const TokenTab({super.key, required this.walletAddress});
 
   @override
   State<StatefulWidget> createState() => TokenTabState();
@@ -43,6 +46,14 @@ class TokenTabState extends State<TokenTab> {
     });
   }
 
+  Future<void> _showBalanceInExplorer() async {
+    final url = Uri.parse(
+        "${Constants.explorerUrl}/address/${widget.walletAddress}#tokentxns");
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_loading) {
@@ -76,7 +87,7 @@ class TokenTabState extends State<TokenTab> {
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: TextButton(
               onPressed: () {
-                print('will open browser');
+                _showBalanceInExplorer();
               },
               child: const Text('view on chain')),
         )
