@@ -5,6 +5,7 @@ import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/main.dart';
 import 'package:flutter_example/services/nft.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -17,6 +18,7 @@ class NftTab extends StatefulWidget {
 }
 
 class NftTabState extends State<NftTab> {
+  bool _hasLoaded = false;
   bool _hasMinted = false;
   bool _minting = false;
   String? _nftUri;
@@ -25,6 +27,30 @@ class NftTabState extends State<NftTab> {
   @override
   void initState() {
     super.initState();
+
+    _loadExistingStateFromStorage();
+  }
+
+  Future<void> _loadExistingStateFromStorage() async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    final storedData = sharedPrefs.getStringList('nft_txn_hash');
+
+    if (storedData == null || storedData.length < 2) {
+      setState(() {
+        _hasLoaded = true;
+      });
+      return;
+    }
+
+    final existingHash = storedData[0];
+    final existingUri = storedData[1];
+
+    setState(() {
+      _txnHash = existingHash;
+      _nftUri = existingUri;
+      _hasMinted = true;
+      _hasLoaded = true;
+    });
   }
 
   Future<void> mintNFT() async {
@@ -51,11 +77,15 @@ class NftTabState extends State<NftTab> {
     final base64Data = utf8.decode(base64.decode(parts[1]));
 
     final Map<String, dynamic> json = jsonDecode(base64Data);
+    final String imageUri = json['image'];
+
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.setStringList('nft_txn_hash', [txHash, imageUri]);
 
     setState(() {
       _hasMinted = true;
       _minting = false;
-      _nftUri = json['image'];
+      _nftUri = imageUri;
       _txnHash = txHash;
     });
   }
@@ -67,14 +97,7 @@ class NftTabState extends State<NftTab> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: _hasMinted ? nftWidget() : mintNftWidget());
-  }
-
-  Widget nftWidget() {
+  Widget _nftWidget() {
     if (_nftUri == null) {
       return const Center(
         child: Text("Something went wrong. Please try again.",
@@ -117,7 +140,7 @@ class NftTabState extends State<NftTab> {
     );
   }
 
-  Widget mintNftWidget() {
+  Widget _mintNftWidget() {
     if (_minting) {
       return (const Column(
         children: [
@@ -162,5 +185,18 @@ class NftTabState extends State<NftTab> {
         ],
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_hasLoaded) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: _hasMinted ? _nftWidget() : _mintNftWidget());
   }
 }
