@@ -325,7 +325,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "5c3d1f521ce4f058c9040bdcc401811c07348204"
+      resolved-ref: a7f4ceb8fa4b278c9a1d8b0a9e5960432b71c84b
       url: "https://github.com/rally-dfs/rly-network-flutter-sdk"
     source: git
     version: "0.0.1"
