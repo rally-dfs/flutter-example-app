@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_example/app_content.dart';
 import 'package:flutter_example/constants.dart';
 import 'package:flutter_example/screens/app_loading_screen.dart';
-import 'package:rly_network_flutter_sdk/account.dart';
 import 'package:rly_network_flutter_sdk/network.dart';
+import 'package:rly_network_flutter_sdk/wallet_manager.dart';
 
 final rlyNetwork = rlyMumbaiNetwork;
 
@@ -50,7 +50,7 @@ class _AppContainerState extends State<AppContainer> {
 
   Future<void> attemptToLoadExistingWallet() async {
     String? existingWallet =
-        await AccountsUtil.getInstance().getAccountAddress();
+        await WalletManager.getInstance().getPublicAddress();
     setState(() {
       _appFinishedLoading = true;
       _walletAddress = existingWallet;

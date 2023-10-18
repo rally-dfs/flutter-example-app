@@ -1,4 +1,4 @@
-import 'package:rly_network_flutter_sdk/gsnClient/utils.dart';
+import 'package:rly_network_flutter_sdk/gsn/utils.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'dart:convert';

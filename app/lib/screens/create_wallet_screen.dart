@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rly_network_flutter_sdk/account.dart';
+import 'package:rly_network_flutter_sdk/wallet.dart';
+import 'package:rly_network_flutter_sdk/wallet_manager.dart';
 
 class WalletCreationScreen extends StatelessWidget {
   final void Function(String?) setWalletAddress;
   const WalletCreationScreen({super.key, required this.setWalletAddress});
 
   Future<void> createWallet() async {
-    String walletAddress = await AccountsUtil.getInstance().createAccount();
+    Wallet newWallet = await WalletManager.getInstance().createWallet();
 
-    setWalletAddress(walletAddress);
+    setWalletAddress(newWallet.address.hex);
   }
 
   @override
