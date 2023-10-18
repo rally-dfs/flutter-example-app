@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 Map<String, dynamic> getTestNFTJson() {
   return {
     "_format": "hh-sol-artifact-1",

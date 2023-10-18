@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_example/widgets/wallet/nft_tab.dart';
 import 'package:flutter_example/widgets/wallet/token_tab.dart';
-import 'package:rly_network_flutter_sdk/account.dart';
+import 'package:rly_network_flutter_sdk/wallet_manager.dart';
 
 class WalletHomeScreen extends StatefulWidget {
   final void Function(String?) setWalletAddress;
@@ -14,7 +14,7 @@ class WalletHomeScreen extends StatefulWidget {
 
 class WalletHomeScreenState extends State<WalletHomeScreen> {
   Future<void> clearWallet() async {
-    AccountsUtil.getInstance().permanentlyDeleteAccount();
+    WalletManager.getInstance().permanentlyDeleteWallet();
     widget.setWalletAddress(null);
   }
 
