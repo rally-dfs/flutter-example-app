@@ -1,10 +1,10 @@
 class Constants {
   static const String nftContractAddress =
-      '0xAb38F4A3016143d13E77616311a717e79079905D';
+      '0xe7d4b732df200fefb28e5bb1f2cac129155f511a';
   static const String rpcURL =
-      "https://polygon-mumbai.g.alchemy.com/v2/WTW_m3g-DG1oNn8n4Rn0Pb-zHVYa8SgB";
+      "https://polygon-amoy.g.alchemy.com/v2/XhXLBVKwc9J1a_z-tEBK8hLthc2H-dSh";
 
-  static const String explorerUrl = "https://mumbai.polygonscan.com";
+  static const String explorerUrl = "https://www.oklink.com/amoy/";
   static const String docsUrl = "https://docs.rallyprotocol.com/";
 
   static const String rlyApiKey =
